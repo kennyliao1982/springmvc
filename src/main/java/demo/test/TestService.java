@@ -3,7 +3,6 @@ package demo.test;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
@@ -14,6 +13,9 @@ public class TestService {
   @Autowired
   private DeferredResultContainer deferredResultContainer;
 
+  @Autowired
+  private Test1Service dataService;
+  
   /**
    * 模擬processing..
    */
@@ -39,6 +41,7 @@ public class TestService {
         msg.setCode(requestCode);
         msg.setResult("done");
 
+        dataService.saveData(msg);
         dr.setResult(msg);
       }
     }).start();
