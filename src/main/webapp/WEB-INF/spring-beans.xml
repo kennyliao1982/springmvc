@@ -19,6 +19,9 @@
 	<aop:aspectj-autoproxy />
 	<mvc:annotation-driven />
 
+	<task:scheduler id="myScheduler" pool-size="10" />
+	<task:annotation-driven scheduler="myScheduler"/>
+<!--
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
@@ -27,10 +30,7 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<task:scheduler id="myScheduler" pool-size="10" />
-	<task:annotation-driven scheduler="myScheduler"/>
-
-	<!-- <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager"> 
+	 <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager"> 
 		<property name="entityManagerFactory" ref="emf" /> </bean> <aop:config> <aop:pointcut 
 		id="serviceMethods" expression="execution(* demo.gae.service.impl.*.*(..))" 
 		/> <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" /> </aop:config> 

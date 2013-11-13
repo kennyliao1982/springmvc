@@ -12,33 +12,29 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 @Controller
 public class TestController {
-	/*
-	 * @RequestMapping(value = "/function/{msg}") public String
-	 * helloWorld(@PathVariable String msg, Model model) {
-	 * model.addAttribute("message", msg); return "helloWorld"; }
-	 */
 
-	private static final Logger log = Logger.getLogger(TestController.class.getName());
+  private static final Logger log = Logger.getLogger(TestController.class.getName());
 
-	@Autowired
-	private DeferredResultContainer deferredResultContainer;
+  @Autowired
+  private DeferredResultContainer deferredResultContainer;
 
-	@RequestMapping(value = "/query/{requestCode}", method = RequestMethod.GET)
-	@ResponseBody
-	public DeferredResult<Message> queryProcessingResult(@PathVariable final String requestCode) {
-		// 創建DeferredResult<Message>
-		DeferredResult<Message> dr = new DeferredResult<Message>();
-		// 當DeferredResult對客戶端響應後將其從列表中移除
-		dr.onCompletion(new Runnable() {
-			@Override
-			public void run() {
-				// TODO 自動生成的方法存根
-				deferredResultContainer.remove(requestCode);
-			}
-		});
+  @Autowired
+  private TestService testService;
 
-		deferredResultContainer.put(requestCode, dr);
-		return dr;
-	}
+  @RequestMapping(value = "/query/{requestCode}", method = RequestMethod.GET)
+  @ResponseBody
+  public DeferredResult<Message> queryProcessingResult(@PathVariable final String requestCode) {
+    DeferredResult<Message> dr = new DeferredResult<Message>();
+    dr.onCompletion(new Runnable() {
+      @Override
+      public void run() {
+        deferredResultContainer.remove(requestCode);
+      }
+    });
+
+    deferredResultContainer.put(requestCode, dr);
+    testService.process(requestCode);
+    return dr;
+  }
 
 }

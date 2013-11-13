@@ -9,6 +9,7 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
 <script type="text/javascript">
+var requestCode = 2;
 	$(function() {
 		(function getMessages(){
             $.ajax({
@@ -17,31 +18,15 @@
                 //cache: false,
                 success: function(res){
                 	if (res.result) {
-    					$('#result').append(res.code + ':' + res.result + '<br/>');
-    					requestCode+=2;
-    				}
+    								$('#result').append(res.code + ':' + res.result + '<br/>');
+    								requestCode+=2;
+    							}
                 }
             }).always(function(){
                 getMessages();
             });
         })();
 	});
-	var requestCode = 2;
-	function getResponse() {
-		$.ajax({
-			dataType : "json",
-			async : false,
-			type : "GET",
-			url : "app/query/" + requestCode,
-			success : function(res) {
-				if (res.result) {
-					$('#result').append(res.code + ':' + res.result + '<br/>');
-					requestCode+=2;
-				}
-			}
-		});
-	}
-	//window.setInterval("getResponse()", 1500);
 </script>
 
 </head>
